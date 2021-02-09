@@ -1,0 +1,10 @@
+# Data
+*.pkl
+*.model
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Python
+*.egg-info
+__pycache__
