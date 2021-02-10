@@ -2,9 +2,9 @@
 
 Data and code for
 
-> Victor Kristof, Aswin Suresh, Matthias Grossglauser, Patrick Thiran, [_War of Words: The Competitive Dynamics of Legislative Processes_](), The Web Conference 2021, April 19-23, 2021, Ljubljana, Slovenia.
+> Victor Kristof, Aswin Suresh, Matthias Grossglauser, Patrick Thiran, [_War of Words II: Enriched Models of Law-Making Processes_](), The Web Conference 2021, April 19-23, 2021, Ljubljana, Slovenia.
 
-_You'll find here the repo for [War of Words: The Competitive Dynamics of Legislative Processes](https://github.com/indy-lab/war-of-words)._
+**Note:** The repo for _War of Words: The Competitive Dynamics of Legislative Processes_ is [here](https://github.com/indy-lab/war-of-words).
 
 ## Set up
 
