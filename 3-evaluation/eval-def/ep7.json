@@ -1,0 +1,66 @@
+[
+    {
+        "legislature": 7,
+        "baseline": "naive"
+    },
+    {
+        "legislature": 7,
+        "baseline": "random"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "no_features"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "mep_features"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "dossier_features"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "rapporteur_advantage"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "edit_features"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "all_features"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "no_features",
+        "latent-features": true
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "all_features",
+        "latent-features": true
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "no_features",
+        "text-features": "text"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "all_features",
+        "text-features": "true"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "no_features",
+        "latent-features": true,
+        "text-features": "true"
+    },
+    {
+        "legislature": 7,
+        "explicit-features": "all_features",
+        "latent-features": true,
+        "text-features": "true"
+    }
+]

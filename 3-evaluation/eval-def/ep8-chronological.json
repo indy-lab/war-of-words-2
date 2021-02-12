@@ -1,0 +1,34 @@
+[
+    {
+        "legislature": 8,
+        "baseline": "naive",
+        "chronological": true
+    },
+    {
+        "legislature": 8,
+        "baseline": "random",
+        "chronological": true
+    },
+    {
+        "legislature": 8,
+        "explicit-features": "no_features",
+        "chronological": true
+    },
+    {
+        "legislature": 8,
+        "explicit-features": "all_features",
+        "chronological": true
+    },
+    {
+        "legislature": 8,
+        "explicit-features": "no_features",
+        "text-features": "true",
+        "chronological": true
+    },
+    {
+        "legislature": 8,
+        "explicit-features": "all_features",
+        "text-features": "true",
+        "chronological": true
+    }
+]

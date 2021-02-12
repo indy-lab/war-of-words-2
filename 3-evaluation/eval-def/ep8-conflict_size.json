@@ -1,0 +1,20 @@
+[
+  {
+    "legislature": 8,
+    "baseline": "naive"
+  },
+  {
+    "legislature": 8,
+    "baseline": "random"
+  },
+  {
+    "legislature": 8,
+    "explicit-features": "no_features"
+  },
+  {
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "latent-features": true,
+    "text-features": "true"
+  }
+]

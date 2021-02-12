@@ -1,6 +1,7 @@
 # Data
 *.pkl
 *.predict
+3-evaluation/results
 
 # Jupyter Notebook
 .ipynb_checkpoints
