@@ -1,5 +1,5 @@
-import numpy as np
 import torch as pt
+import numpy as np
 
 from ..features import ParameterVector
 from .base import Model, TrainedModel
@@ -10,15 +10,15 @@ class WarOfWordsLatent(Model):
 
     # Default hyperparams. Doesn't include default value for explicit features.
     DEFAULT_HYPERPARAMS = {
-        'reg_vec': 0.1,
-        'n_dims': 10,
-        'lr': 0.1,
-        'lr_vec': 0.1,
-        'gamma': 0.9,
-        'n_epochs': 5,
-        'batch_size': 1000,
-        'tol': 1e-5,
-    }
+            'reg_vec': 0.1,
+            'n_dims': 10,
+            'lr': 0.1,
+            'lr_vec': 0.1,
+            'gamma': 0.9,
+            'n_epochs': 5,
+            'batch_size': 1000,
+            'tol': 1e-5
+        }
 
     def __init__(self, data, features, hyperparameters, verbose=False):
         """Initialize the model.
@@ -37,9 +37,6 @@ class WarOfWordsLatent(Model):
         # Get index of bias.
         self._bias_idx = features.get_idx('bias')
         self._verbose = verbose
-        # Get MEPs and dossier indices.
-        self._meps = set(self._features.get_group('mep'))
-        self._doss = set(self._features.get_group('dossier'))
 
     def _init_params(self):
         hp = self._hyperparameters
@@ -62,52 +59,24 @@ class WarOfWordsLatent(Model):
 
         return params, vec
 
-    def _get_dossier_latent_vector(self, X, vec):
-        K = len(X)
-        # Go through all sparse entries.
-        sparse_idx = X.coalesce().indices().T
-        for i, j in sparse_idx:
-            # Skip if not dossier feature vector.
-            if int(i) != K - 1:
-                continue
-            # Return latent vector of dossier for this data point.
-            j = int(j)
-            if j in self._doss:
-                return vec[j, :]
-
-    def _get_meps_latent_vector(self, X, vec):
-        K = len(X)
-        # Initialize MEP latent features.
-        vec_x = pt.zeros(K - 1, self._hyperparameters['n_dims'])
-        # Go through all sparse entries.
-        sparse_idx = X.coalesce().indices().T
-        for i, j in sparse_idx:
-            # Skip if dossier feature vector.
-            if int(i) == K - 1:
-                continue
-            # Construct MEP latent vector for each edit.
-            j = int(j)
-            if j in self._meps:
-                vec_x[i, :] += vec[j, :]
-        return vec_x
-
     def _logits(self, X, params, vec):
-        # X = pt.from_numpy(X).float()
+        X = pt.from_numpy(X).float()
         # Compute logits.
-        logits = X.mm(params.unsqueeze(1))
-        # Get dossier latent features.
-        # last = X[-1, :]
-        # vec_y = vec[doss][last[doss] > 0].transpose(0, 1)
-        vec_y = self._get_dossier_latent_vector(X, vec)
+        logits = X.matmul(params)
+        # Get MEPs and dossiers indices.
+        meps = self._features.get_group('mep')
+        doss = self._features.get_group('dossier')
+        # Get dossier latent feature.
+        last = X[-1, :]
+        vec_y = vec[doss][last[doss] > 0].transpose(0, 1)
         # Get MEPs latent features.
-        # Xm = X[:-1, :][:, self._meps]
-        # vec_x = Xm.matmul(vec[self._meps].unsqueeze(1))
-        vec_x = self._get_meps_latent_vector(X, vec)
+        Xm = X[:-1, :][:, meps]
+        vec_x = Xm.matmul(vec[meps])
         # Compute latent features.
-        latent_feat = vec_x.mm(vec_y.unsqueeze(1))
+        latent_feat = vec_x.matmul(vec_y).squeeze()
         # Compute logits with latent features.
         logits[:-1] += latent_feat
-        return logits.squeeze()
+        return logits
 
     def _probabilities(self, X, params, vec):
         # Compute logits.
@@ -167,22 +136,19 @@ class WarOfWordsLatent(Model):
         # Set optimizer.
         conf_params = [
             {'params': params, 'lr': hp['lr']},
-            {'params': vec, 'lr': hp['lr_vec']},
+            {'params': vec,    'lr': hp['lr_vec']},
         ]
-        # optimizer = pt.optim.SGD(conf_params)
         # optimizer = pt.optim.Adam(conf_params)
         optimizer = pt.optim.Adagrad(conf_params)
-        scheduler = pt.optim.lr_scheduler.ExponentialLR(
-            optimizer, gamma=hp['gamma']
-        )
+        # optimizer = pt.optim.SGD(conf_params)
+        scheduler = pt.optim.lr_scheduler.ExponentialLR(optimizer,
+                                                        gamma=hp['gamma'])
         # Set minibatches.
-        batches = BatchHelper(
-            self._data,
-            batch_size=hp['batch_size'],
-            shuffle=True,
-            drop_last=True,
-            seed=10,
-        )
+        batches = BatchHelper(self._data,
+                              batch_size=hp['batch_size'],
+                              shuffle=True,
+                              drop_last=True,
+                              seed=10)
         n_batches = len(batches)
         batch_losses = list()
         vlos = -1
@@ -211,9 +177,8 @@ class WarOfWordsLatent(Model):
                         raise ValueError('NaN in log loss! Fitting stopped.')
                     batch_losses.append(float(tlos))
                 if verbose:
-                    self._print_progress(
-                        i, e, n_batches, loss, tlos, vlos, params, vec
-                    )
+                    self._print_progress(i, e, n_batches,
+                                         loss, tlos, vlos, params, vec)
             # Update learning rate.
             scheduler.step()
             # Compute validation log-loss for the current epoch.
@@ -225,7 +190,7 @@ class WarOfWordsLatent(Model):
         base = params.detach().numpy()
         params_return = {
             'params': ParameterVector(self._features, base=base),
-            'vec': vec.detach().numpy(),
+            'vec': vec.detach().numpy()
         }
         if validation_data is None:
             with pt.no_grad():
@@ -254,6 +219,7 @@ class WarOfWordsLatent(Model):
 
 
 class TrainedWarOfWordsLatent(TrainedModel):
+
     def __init__(self, features, hyperparams, params, vec):
         super().__init__()
         self.features = features
