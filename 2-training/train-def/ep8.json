@@ -1,0 +1,80 @@
+[
+  {
+    "run": true,
+    "legislature": 8,
+    "baseline": "naive"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "baseline": "random"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "rapporteur_advantage"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "mep_features"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "edit_features"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "dossier_features"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features"
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features",
+    "latent-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "latent-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features",
+    "text-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "text-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features",
+    "latent-features": true,
+    "text-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "latent-features": true,
+    "text-features": true
+  }
+]

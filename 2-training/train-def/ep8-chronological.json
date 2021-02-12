@@ -1,0 +1,40 @@
+[
+  {
+    "run": true,
+    "legislature": 8,
+    "baseline": "naive",
+    "chronological": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "baseline": "random",
+    "chronological": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features",
+    "chronological": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "chronological": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "no_features",
+    "text-features": "text",
+    "chronological": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "text-features": "text",
+    "chronological": true
+  }
+]
