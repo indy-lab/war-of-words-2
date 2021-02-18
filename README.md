@@ -85,6 +85,13 @@ Run all four definitions (`ep7.json`, `ep8.json`, `ep8-chronological.json`, and 
 
 You finally reproduce the analysis in the paper by running the scripts in the folder `4-analysis`:
 
+```
+python results.py --results ../3-evaluation/results --save-as figures/results.pdf
+python improvement.py --results ../3-evaluation/results --save-as figures/improvement.pdf
+python parameter-analysis.py --model ../2-trained-models/ep8-all_features-latent-text.predict
+python error-analysis.py --save-as figures/error-analysis.pdf
+```
+
 ## Requirements
 
 This project requires **Python 3.6**.
@@ -104,8 +111,4 @@ To cite this work, use:
   location = {Ljubljana, Solvenia},
   series = {WWW '21}
 }
-```
-
-```
-
 ```
