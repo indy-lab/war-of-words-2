@@ -9,6 +9,18 @@
 # - $1: path to folder of "canonical" dataset
 # - $2: output path
 
+# Check arguments.
+if [ -z "$1" ]
+  then
+    echo "Missing path to folder of canonical dataset"
+    exit 1
+fi
+if [ -z "$2" ]
+  then
+    echo "Missing output path to new canonical dataset"
+    exit 1
+fi
+
 python split-chronologically.py \
     --canonical $1 \
     --output_path $2 \
