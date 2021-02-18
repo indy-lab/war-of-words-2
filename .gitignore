@@ -1,4 +1,5 @@
 # Data
+data/
 *.pkl
 *.predict
 3-evaluation/results
