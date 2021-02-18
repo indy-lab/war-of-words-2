@@ -1,4 +1,4 @@
-# War of Words II: Enriched Models for Law-Making Processes
+# War of Words II: Enriched Models of Law-Making Processes
 
 Data and code for
 
