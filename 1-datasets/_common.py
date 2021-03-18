@@ -2,6 +2,7 @@ import argparse
 import os
 import pickle
 from collections import Counter
+from pathlib import Path
 
 import numpy as np
 from warofwords import Dataset
@@ -106,9 +107,9 @@ def _split(array, split):
 
 def _split_indices(array, indices):
     def get_array(kind):
-        return [array[idx] for idx in np.loadtxt(indices[kind], dtype=int)]
+        return [array[idx] for idx in indices[kind]]
 
-    return get_array('train'), get_array('valid'), get_array('test')
+    return get_array('train'), get_array('test')
 
 
 def save(feat, featmat, labels, output_path, kind=None):
@@ -131,19 +132,16 @@ def shuffle_split_save(
     # If the split indices are given, preprocess the data using them.
     if indices is not None:
         print('Splitting by pre-defined indices...')
-        fmtrain, fmvalid, fmtest = _split_indices(featmats, indices)
-        lbtrain, lbvalid, lbtest = _split_indices(labels, indices)
+        fmtrain, fmtest = _split_indices(featmats, indices)
+        lbtrain, lbtest = _split_indices(labels, indices)
         # Shuffle each split separately.
         print(f'Splits shuffled with seed = {seed}.')
         fmtrain, lbtrain = _shuffle(fmtrain, lbtrain, seed)
-        fmvalid, lbvalid = _shuffle(fmvalid, lbvalid, seed)
         fmtest, lbtest = _shuffle(fmtest, lbtest, seed)
         # Save data.
         save(features, fmtrain, lbtrain, output_path, kind='train')
-        save(features, fmvalid, lbvalid, output_path, kind='valid')
         save(features, fmtest, lbtest, output_path, kind='test')
         print(f'  Training set: {len(lbtrain)} data points')
-        print(f'  Validation set: {len(lbvalid)} data points')
         print(f'  Test set:     {len(lbtest)} data points')
 
     # Otherwise, use the given seed and split parameters.
@@ -172,15 +170,13 @@ def shuffle_split_save(
 
 
 def get_indices(args):
-    if (
-        args.train_indices is not None
-        and args.valid_indices is not None
-        and args.test_indices is not None
-    ):
+    def load(path):
+        return np.loadtxt(Path(path), dtype=int)
+
+    if args.train_indices is not None and args.test_indices is not None:
         return {
-            'train': args.train_indices,
-            'valid': args.valid_indices,
-            'test': args.test_indices,
+            'train': load(args.train_indices),
+            'test': load(args.test_indices),
         }
     else:
         return None
@@ -209,9 +205,6 @@ def parse_args():
     )
     parser.add_argument(
         '--train-indices', default=None, help='Path to indices for train set'
-    )
-    parser.add_argument(
-        '--valid-indices', default=None, help='Path to indices for valid set'
     )
     parser.add_argument(
         '--test-indices', default=None, help='Path to indices for test set'

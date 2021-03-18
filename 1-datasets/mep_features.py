@@ -4,8 +4,9 @@ import pickle
 from warofwords import Features
 
 from _common import (add_edit_embedding, add_text_features,
-                     add_title_embedding, filter_dataset, load_dataset,
-                     parse_args, shuffle_split_save, summarize_features)
+                     add_title_embedding, filter_dataset, get_indices,
+                     load_dataset, parse_args, shuffle_split_save,
+                     summarize_features)
 
 
 def main(args):
@@ -27,10 +28,6 @@ def main(args):
                 features.add(a['nationality'], group='nationality')
                 features.add(a['group'], group='political-group')
                 features.add(a['gender'], group='gender')
-    if args.text_features:
-        # Add text features.
-        dim = len(dataset[0][0]['edit-embedding'])
-        add_text_features(features, dim)
 
     # Print summary of the features.
     summarize_features(features)
@@ -54,10 +51,6 @@ def main(args):
                 vec[a['nationality']] = 1
                 vec[a['group']] = 1
                 vec[a['gender']] = 1
-            if args.text_features:
-                # Add text features.
-                add_edit_embedding(vec, datum)
-                add_title_embedding(vec, datum)
 
             featmat.append(vec.as_sparse_list())
             # Add label if edit is accepted.
@@ -79,7 +72,13 @@ def main(args):
         featmats.append(featmat)
 
     shuffle_split_save(
-        features, featmats, labels, args.seed, args.split, args.output_path
+        features,
+        featmats,
+        labels,
+        args.seed,
+        args.split,
+        args.output_path,
+        get_indices(args),
     )
 
 

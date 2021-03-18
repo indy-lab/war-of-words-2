@@ -4,8 +4,9 @@ import numpy as np
 from warofwords import Features
 
 from _common import (add_edit_embedding, add_text_features,
-                     add_title_embedding, filter_dataset, load_dataset,
-                     parse_args, shuffle_split_save, summarize_features)
+                     add_title_embedding, filter_dataset, get_indices,
+                     load_dataset, parse_args, shuffle_split_save,
+                     summarize_features)
 
 
 def main(args):
@@ -119,7 +120,13 @@ def main(args):
         featmats.append(featmat)
 
     shuffle_split_save(
-        features, featmats, labels, args.seed, args.split, args.output_path
+        features,
+        featmats,
+        labels,
+        args.seed,
+        args.split,
+        args.output_path,
+        get_indices(args),
     )
 
 

@@ -16,11 +16,6 @@ def main(args):
     # Load title embeddings.
     title_embeddings = load_embeddings(args.title_embedding)
 
-    c = 0
-    for conflict in conflicts:
-        for edit in conflict:
-            c += 1
-
     i = 0
     with open(args.output, 'w') as f:
         for conflict in conflicts:

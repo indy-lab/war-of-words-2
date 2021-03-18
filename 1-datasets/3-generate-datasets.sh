@@ -33,7 +33,6 @@ seed=0
 for leg in "${legs[@]}"; do
     canonical=$1/war-of-words-2-ep$leg.txt
     train_indices=$3/ep$leg-train-indices.txt
-    valid_indices=$3/ep$leg-valid-indices.txt
     test_indices=$3/ep$leg-test-indices.txt
     for exp in "${exps[@]}"; do
         dataset=ep$leg-$exp
@@ -45,7 +44,6 @@ for leg in "${legs[@]}"; do
                 --threshold $thr \
                 --seed $seed \
                 --train-indices $train_indices \
-                --valid-indices $valid_indices \
                 --test-indices $test_indices
         else
             echo "Already generated."
@@ -64,7 +62,6 @@ seed=0
 for leg in "${legs[@]}"; do
     canonical=$1/war-of-words-2-ep$leg-with_text_embedding.txt
     train_indices=$3/ep$leg-train-indices.txt
-    valid_indices=$3/ep$leg-valid-indices.txt
     test_indices=$3/ep$leg-test-indices.txt
     for exp in "${exps[@]}"; do
         dataset=ep$leg-$exp-$text
@@ -78,7 +75,6 @@ for leg in "${legs[@]}"; do
                 --seed $seed \
                 --text-features \
                 --train-indices $train_indices \
-                --valid-indices $valid_indices \
                 --test-indices $test_indices
         else
             echo "Already generated."
