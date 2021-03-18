@@ -104,6 +104,13 @@ def _split(array, split):
     return array[:idx], array[idx:]
 
 
+def _split_indices(array, indices):
+    def get_array(kind):
+        return [array[idx] for idx in np.loadtxt(indices[kind], dtype=int)]
+
+    return get_array('train'), get_array('valid'), get_array('test')
+
+
 def save(feat, featmat, labels, output_path, kind=None):
     # Add a "kind" to the path of the dataset, e.g., "train" of "test".
     if kind is not None:
@@ -117,26 +124,66 @@ def save(feat, featmat, labels, output_path, kind=None):
     print(f'Saved to {path}.')
 
 
-def shuffle_split_save(features, featmats, labels, seed, split, output_path):
-    if seed is not None:
-        # Shuffle data.
-        featmats, labels = _shuffle(featmats, labels, seed)
-        print(f'Dataset shuffled with seed = {seed}.')
+def shuffle_split_save(
+    features, featmats, labels, seed, split, output_path, indices=None
+):
 
-    if split is not None:
-        # Split data.
-        fmtrain, fmtest = _split(featmats, split)
-        lbtrain, lbtest = _split(labels, split)
+    # If the split indices are given, preprocess the data using them.
+    if indices is not None:
+        print('Splitting by pre-defined indices...')
+        fmtrain, fmvalid, fmtest = _split_indices(featmats, indices)
+        lbtrain, lbvalid, lbtest = _split_indices(labels, indices)
+        # Shuffle each split separately.
+        print(f'Splits shuffled with seed = {seed}.')
+        fmtrain, lbtrain = _shuffle(fmtrain, lbtrain, seed)
+        fmvalid, lbvalid = _shuffle(fmvalid, lbvalid, seed)
+        fmtest, lbtest = _shuffle(fmtest, lbtest, seed)
         # Save data.
         save(features, fmtrain, lbtrain, output_path, kind='train')
+        save(features, fmvalid, lbvalid, output_path, kind='valid')
         save(features, fmtest, lbtest, output_path, kind='test')
-        if type(split) is float:
-            print(f'Dataset split as {split*100:.0f}%-{(1-split)*100:.0f}%:')
         print(f'  Training set: {len(lbtrain)} data points')
+        print(f'  Validation set: {len(lbvalid)} data points')
         print(f'  Test set:     {len(lbtest)} data points')
+
+    # Otherwise, use the given seed and split parameters.
     else:
-        # Save data.
-        save(features, featmats, labels, output_path)
+        if seed is not None:
+            # Shuffle data.
+            featmats, labels = _shuffle(featmats, labels, seed)
+            print(f'Dataset shuffled with seed = {seed}.')
+
+        if split is not None:
+            # Split data.
+            fmtrain, fmtest = _split(featmats, split)
+            lbtrain, lbtest = _split(labels, split)
+            # Save data.
+            save(features, fmtrain, lbtrain, output_path, kind='train')
+            save(features, fmtest, lbtest, output_path, kind='test')
+            if type(split) is float:
+                print(
+                    f'Dataset split as {split*100:.0f}%-{(1-split)*100:.0f}%:'
+                )
+            print(f'  Training set: {len(lbtrain)} data points')
+            print(f'  Test set:     {len(lbtest)} data points')
+        else:
+            # Save data.
+            save(features, featmats, labels, output_path)
+
+
+def get_indices(args):
+    if (
+        args.train_indices is not None
+        and args.valid_indices is not None
+        and args.test_indices is not None
+    ):
+        return {
+            'train': args.train_indices,
+            'valid': args.valid_indices,
+            'test': args.test_indices,
+        }
+    else:
+        return None
 
 
 def parse_args():
@@ -159,5 +206,14 @@ def parse_args():
     )
     parser.add_argument(
         '--seed', default=None, type=int, help='Seed for random generator'
+    )
+    parser.add_argument(
+        '--train-indices', default=None, help='Path to indices for train set'
+    )
+    parser.add_argument(
+        '--valid-indices', default=None, help='Path to indices for valid set'
+    )
+    parser.add_argument(
+        '--test-indices', default=None, help='Path to indices for test set'
     )
     return parser.parse_args()
