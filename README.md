@@ -41,7 +41,7 @@ Start by generating the "chronological" datasets, where edits are ordered accord
 
 ```
 cd 1-datasets
-./1-split-chronologically.sh ../data/canonical/war-of-words-ep8.txt ../data/canonical/war-of-words-ep8-chronological.txt
+./1-split-chronologically.sh ../data/canonical/war-of-words-2-ep8.txt ../data/canonical/war-of-words-2-ep8-chronological.txt
 ```
 
 Then map the text embeddings to the canonical datasets:
