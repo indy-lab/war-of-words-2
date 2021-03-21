@@ -1,1 +1,1 @@
-{"edit-embedding": 2.266738556, "title-embedding": 2.266738556, "mep": 0.7061801502, "dossier": 0.7061801502, "reg_vec": 0.9203460182, "n_dims": 10, "lr": 1.135840929, "lr_vec": 0.2879077362, "gamma": 0.8, "n_epochs": 3}
+{"edit-embedding": 2.533058726, "title-embedding": 2.533058726, "mep": 0.7890140834, "dossier": 0.7890140834, "reg_vec": 1.356358036, "n_dims": 20, "lr": 0.3858233885, "lr_vec": 0.1076618571, "gamma": 0.9, "n_epochs": 3}
