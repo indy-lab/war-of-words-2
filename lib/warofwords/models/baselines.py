@@ -77,7 +77,8 @@ class Random(Model):
         features = Features()
         features.add('default', group='conflict-size')
         for size in countconflicts:
-            ps[size] = countwins[size] / countconflicts[size]
+            # Compute with Laplace smoothing to prevent probabilities of 0.
+            ps[size] = (countwins[size] + 1) / (countconflicts[size] + 2)
             features.add('p-' + str(size), group='conflict-size')
         # Store this probability p that the dossier wins.
         params = features.new_parameters()
