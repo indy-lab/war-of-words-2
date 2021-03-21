@@ -4,15 +4,10 @@ import json
 from warofwords import TrainedWarOfWordsLatent
 
 LEG = 8
-BASE = '/Users/kristof/GitHub/parl'
 
 # Load mapping from dossier to title.
-titles = dict()
-with open(f'{BASE}/data/data/helpers/ep{LEG}-dossier2title.json', 'r') as f:
-    for ln in f.readlines():
-        d = json.loads(ln)
-        for k, v in d.items():
-            titles[k.replace('_', '-')] = v
+with open('../data/helpers/dossier-titles.json', 'r') as f:
+    titles = json.load(f)
 
 
 def sort_params(group, parameters, features, reverse=True, n=10):
@@ -24,7 +19,7 @@ def sort_params(group, parameters, features, reverse=True, n=10):
 
 
 models = '../2-training/trained-models'
-model = f'{models}/ep{LEG}-all_features-latent-text.predict'
+model = f'{models}/ep{LEG}-all_features-latent-text.fit'
 model = TrainedWarOfWordsLatent.load(model)
 
 parameters = model.parameters
@@ -49,22 +44,28 @@ for group in groups:
     for feat, p in sort_params(group, parameters, features):
         print(f'{p:+.2f} {feat}')
 
-print('DOSSIERS')
-dossiers = sort_params('dossier', parameters, features, reverse=False, n=10)
+print('TOP-10 DOSSIERS')
+dossiers = sort_params('dossier', parameters, features, reverse=True, n=10)
 for doss, p in dossiers:
     title = titles[doss]
     print(f'{p:+.2f} {doss} {title}')
 
-print('MEPS')
-meps = sort_params('mep', parameters, features, n=10)
-for mep, p in meps:
-    name = (
-        Parliamentarian.select(Parliamentarian.displayname)
-        .where(Parliamentarian.europarl_id == mep)
-        .get()
-        .displayname
-    )
-    print(f'{p:+.2f} {name}')
+print('BOTTOM-10 DOSSIERS')
+dossiers = sort_params('dossier', parameters, features, reverse=False, n=50)
+for doss, p in dossiers:
+    title = titles[doss]
+    print(f'{p:+.2f} {doss} {title}')
+
+# print('MEPS')
+# meps = sort_params('mep', parameters, features, n=10)
+# for mep, p in meps:
+#     name = (
+#         Parliamentarian.select(Parliamentarian.displayname)
+#         .where(Parliamentarian.europarl_id == mep)
+#         .get()
+#         .displayname
+#     )
+#     print(f'{p:+.2f} {name}')
 
 
 group = 'political-group'

@@ -118,7 +118,7 @@ def main(args):
         0.01,
     )
     plt.yticks(rng, ['0.00'] + list(rng[1:]))
-    plt.ylim([-0.045, 0.0])
+    plt.ylim([-0.055, 0.0])
     # Title and legend.
     # plt.title(r'Difference in cross entropy loss over \textsc{WoW}($\cdot$)')
     plt.ylabel(r'Diff. in cross entropy loss')
