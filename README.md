@@ -2,7 +2,7 @@
 
 Data and code for
 
-> Victor Kristof, Aswin Suresh, Matthias Grossglauser, Patrick Thiran, [_War of Words II: Enriched Models of Law-Making Processes_](), The Web Conference 2021, April 19-23, 2021, Ljubljana, Slovenia.
+> Victor Kristof, Aswin Suresh, Matthias Grossglauser, Patrick Thiran, [_War of Words II: Enriched Models of Law-Making Processes_](https://infoscience.epfl.ch/record/284828), The Web Conference 2021, April 19-23, 2021, Ljubljana, Slovenia.
 
 **Note:** The repo for _War of Words: The Competitive Dynamics of Legislative Processes_ is [here](https://github.com/indy-lab/war-of-words).
 
@@ -25,10 +25,16 @@ Put the canonical datasets (`war-of-words-2-ep{7,8}.txt`) in a folder in the rep
 mkdir -p data/canonical
 ```
 
-If you don't want to generate the text embeddings from scratch, put these in
+If you don't want to generate the text embeddings from scratch, download `ep{7,8}-text-embeddings.txt` and put them in
 
 ```
 mkdir data/text-embedding
+```
+
+Also download the helper files (a mapping of dossier references to their title and some MEPs metadata) and put them in
+
+```
+mkdir data/helpers
 ```
 
 ## Step 0: Learn the Text Embeddings
@@ -88,9 +94,12 @@ You finally reproduce the analysis in the paper by running the scripts in the fo
 ```
 python results.py --results ../3-evaluation/results --save-as figures/results.pdf
 python improvement.py --results ../3-evaluation/results --save-as figures/improvement.pdf
-python parameter-analysis.py --model ../2-trained-models/ep8-all_features-latent-text.predict
+python parameter-analysis.py --model ../2-trained-models/ep8-all_features-latent-text.fit
 python error-analysis.py --save-as figures/error-analysis.pdf
 ```
+
+The interpretation of the latent features is in `4-analysis/notebooks/latent-features.ipynb`.
+Each of the scripts above also have a corresponding notebook, so that the outputs is easily accessed through notebook readers (such as on GitHub).
 
 ## Requirements
 
