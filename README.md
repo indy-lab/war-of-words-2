@@ -28,7 +28,7 @@ mkdir -p data/canonical
 If you don't want to generate the text embeddings from scratch, download `ep{7,8}-text-embeddings.txt` and put them in
 
 ```
-mkdir data/text-embedding
+mkdir data/text-embeddings
 ```
 
 Also download the helper files (a mapping of dossier references to their title and some MEPs metadata) and put them in
@@ -37,22 +37,41 @@ Also download the helper files (a mapping of dossier references to their title a
 mkdir data/helpers
 ```
 
-## Step 0: Learn the Text Embeddings
+You should also put the files containing the indices to split the data into train and test sets in 
 
-Start by processing the canonical datasets
+```
+mkdir data/split-indices
+```
 
-## Step 1: Process the Datasets
 
-Start by generating the "chronological" datasets, where edits are ordered according to the date of the dossiers:
+## Step 0: Generate the text embeddings
+
+You can generate the text embeddings for the 7th and 8th legislatures by running
+
+```
+python generate_embeddings.py --leg {7,8} --data_dir ../data/canonical --indices_dir ../data/split-indices --dossier2title_dir ../data/helpers --text_embeddings_dir ../data/text-embeddings
+```
+
+You can then generate "chronological" datasets, where edits are ordered according to the date of the dossiers:
 
 ```
 cd 1-datasets
 ./1-split-chronologically.sh ../data/canonical/war-of-words-2-ep8.txt ../data/canonical/war-of-words-2-ep8-chronological.txt
 ```
 
-Then map the text embeddings to the canonical datasets:
+To generate text embeddings for these, you can then run
 
 ```
+cd 0-text-embeddings
+python generate_embeddings.py --leg 8 --data_dir ../data/canonical --dossier2title_dir ../data/helpers --text_embeddings_dir ../data/text-embeddings --chronological
+```
+
+## Step 1: Process the Datasets
+
+Map the text embeddings to the canonical datasets:
+
+```
+cd 1-datasets
 ./2-map-text-embeddings.sh ../data/canonical ../data/text-embeddings
 ```
 
@@ -99,7 +118,9 @@ python error-analysis.py --save-as figures/error-analysis.pdf
 ```
 
 The interpretation of the latent features is in `4-analysis/notebooks/latent-features.ipynb`.
+The interpretation of the text features is in `4-analysis/notebooks/text-features.ipynb`.
 Each of the scripts above also have a corresponding notebook, so that the outputs is easily accessed through notebook readers (such as on GitHub).
+
 
 ## Requirements
 
