@@ -1,4 +1,5 @@
 import json
+import numpy as np
 
 from warofwords import TrainedWarOfWordsLatent
 
@@ -93,6 +94,8 @@ for mep_id, p in mep_ids:
 group = 'title-embedding'
 print('\n###', group.upper(), '\n')
 print(parameters.get_group(group))
+np.savetxt('title-parameters.txt',parameters.get_group(group))
 group = 'edit-embedding'
 print('\n###', group.upper(), '\n')
 print(parameters.get_group(group))
+np.savetxt('edit-parameters.txt',parameters.get_group(group))
