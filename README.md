@@ -17,7 +17,7 @@ pip install -e lib
 
 ## Data
 
-Download the (raw) data from [link]()
+Download the (raw) data from [link](https://zenodo.org/record/4525015)
 
 Put the canonical datasets (`war-of-words-2-ep{7,8}.txt`) in a folder in the repo, for example:
 
@@ -25,19 +25,19 @@ Put the canonical datasets (`war-of-words-2-ep{7,8}.txt`) in a folder in the rep
 mkdir -p data/canonical
 ```
 
-If you don't want to generate the text embeddings from scratch, download `ep{7,8}-text-embeddings.txt` and put them in
+If you don't want to generate the text embeddings from scratch, download `text-embeddings.zip` and put the unzipped files in
 
 ```
 mkdir data/text-embeddings
 ```
 
-Also download the helper files (a mapping of dossier references to their title and some MEPs metadata) and put them in
+Also download the helpers `helpers.zip` (a mapping of dossier references to their title and some MEPs metadata) and put the files in
 
 ```
 mkdir data/helpers
 ```
 
-You should also put the files containing the indices to split the data into train and test sets in 
+You should also put the files containing the indices to split the data into train and test sets `split-indices.zip` in 
 
 ```
 mkdir data/split-indices
