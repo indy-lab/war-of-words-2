@@ -112,10 +112,10 @@ def _split_indices(array, indices):
     return get_array('train'), get_array('test')
 
 
-def save(feat, featmat, labels, output_path, kind=None):
+def save(feat, featmat, labels, path, kind=None):
     # Add a "kind" to the path of the dataset, e.g., "train" of "test".
     if kind is not None:
-        path = output_path.replace('.', '-' + kind + '.')
+        path = path.replace('.', '-' + kind + '.')
     path = os.path.abspath(path)
     with open(path, 'wb') as f:
         pickle.dump(
@@ -166,7 +166,7 @@ def shuffle_split_save(
             print(f'  Test set:     {len(lbtest)} data points')
         else:
             # Save data.
-            save(features, featmats, labels, output_path)
+            save(features, featmats, labels, output_path, kind='fit')
 
 
 def get_indices(args):

@@ -82,6 +82,16 @@ for leg in "${legs[@]}"; do
     done
 done
 
+# Generate dataset without split to fit the model on all the data.
+dataset=ep$leg-$exp-$text
+echo "Generating $dataset on all data..."
+if [ ! -f "$2/$dataset-fit.pkl" ]; then
+    output=$2/$dataset.pkl
+    python $exp.py $canonical $output --threshold $thr
+else
+    echo "Already generated."
+fi
+
 # TASK 2: EXPLICIT FEATURES
 
 # Preprocessing parameters.
