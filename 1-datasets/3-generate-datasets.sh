@@ -82,15 +82,35 @@ for leg in "${legs[@]}"; do
     done
 done
 
-# Generate dataset without split to fit the model on all the data.
+# TASK 1: WHOLE DATASET FOR PARAMETER ANALYSIS
+
 dataset=ep$leg-$exp-$text
-echo "Generating $dataset on all data..."
+echo "Generating $dataset on whole dataset..."
 if [ ! -f "$2/$dataset-fit.pkl" ]; then
     output=$2/$dataset.pkl
     python $exp.py $canonical $output --threshold $thr
 else
     echo "Already generated."
 fi
+
+# TASK 1: BASELINES
+
+legs=(7 8)
+kinds=("train" "test")
+baselines=("naive" "random")
+for leg in "${legs[@]}"; do
+    for kind in "${kinds[@]}"; do
+        for baseline in "${baselines[@]}"; do
+            dataset=ep$leg-$baseline-$kind
+            echo "Generating $dataset..."
+            if [ ! -f "$2/$dataset.pkl" ]; then
+                cp $2/ep$leg-no_features-$kind.pkl $2/$dataset.pkl
+            else
+                echo "Already generated."
+            fi
+        done
+    done
+done
 
 # TASK 2: EXPLICIT FEATURES
 
@@ -132,3 +152,21 @@ for exp in "${exps[@]}"; do
         echo "Already generated."
     fi
 done
+
+# TASK 2: BASELINES
+
+leg=8
+kinds=("train" "test")
+baselines=("naive" "random")
+for kind in "${kinds[@]}"; do
+    for baseline in "${baselines[@]}"; do
+        dataset=ep$leg-$baseline-$order-$kind
+        echo "Generating $dataset..."
+        if [ ! -f "$2/$dataset.pkl" ]; then
+            cp $2/ep$leg-no_features-$order-$kind.pkl $2/$dataset.pkl
+        else
+            echo "Already generated."
+        fi
+    done
+done
+
