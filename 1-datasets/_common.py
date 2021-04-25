@@ -109,7 +109,11 @@ def _split_indices(array, indices):
     def get_array(kind):
         return [array[idx] for idx in indices[kind]]
 
-    return get_array('train'), get_array('test')
+    kinds = list(indices.keys())
+    if len(kinds) == 1:
+        return get_array(kinds[0])
+    else:
+        return [get_array(kind) for kind in kinds]
 
 
 def save(feat, featmat, labels, path, kind=None):
@@ -130,7 +134,7 @@ def shuffle_split_save(
 ):
 
     # If the split indices are given, preprocess the data using them.
-    if indices is not None:
+    if indices is not None and 'test' in indices:
         print('Splitting by pre-defined indices...')
         fmtrain, fmtest = _split_indices(featmats, indices)
         lbtrain, lbtest = _split_indices(labels, indices)
@@ -143,6 +147,17 @@ def shuffle_split_save(
         save(features, fmtest, lbtest, output_path, kind='test')
         print(f'  Training set: {len(lbtrain)} data points')
         print(f'  Test set:     {len(lbtest)} data points')
+
+    # Only the training indices were given.
+    elif indices is not None and 'test' not in indices:
+        fmtrain = _split_indices(featmats, indices)
+        lbtrain = _split_indices(labels, indices)
+        # Shuffle each split separately.
+        print(f'Splits shuffled with seed = {seed}')
+        fmtrain, lbtrain = _shuffle(fmtrain, lbtrain, seed)
+        # Save data.
+        save(features, fmtrain, lbtrain, output_path, kind='fit')
+        print(f'  Training set: {len(lbtrain)} data points')
 
     # Otherwise, use the given seed and split parameters.
     else:
@@ -177,6 +192,10 @@ def get_indices(args):
         return {
             'train': load(args.train_indices),
             'test': load(args.test_indices),
+        }
+    elif args.train_indices is not None and args.test_indices is None:
+        return {
+            'train': load(args.train_indices),
         }
     else:
         return None

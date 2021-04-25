@@ -46,6 +46,22 @@ for leg in "${legs[@]}"; do
     fi
 done
 
+# Map embeddings trained on the whole dataset.
+dataset=war-of-words-2-ep$leg-with_text_embedding_for_parameter_analysis
+echo "Generating $dataset..."
+output=$canonicaldir/$dataset.txt
+if [ ! -f "$output" ]; then
+    python map-text-embeddings.py \
+        --canonical $canonical \
+        --edit-embedding $embeddingdir/parameter-analysis/ep$leg-$editembedding.txt \
+        --title-embedding $embeddingdir/parameter-analysis/ep$leg-$titleembedding.txt \
+        --output $output
+    echo "Saved to $output"
+else
+    echo "Already generated."
+fi
+
+
 # TASK 2
 
 leg=8

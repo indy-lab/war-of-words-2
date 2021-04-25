@@ -84,11 +84,27 @@ done
 
 # TASK 1: WHOLE DATASET FOR PARAMETER ANALYSIS
 
+exp="all_features"
+text="text"
+leg=8
+thr=10
+seed=0
 dataset=ep$leg-$exp-$text
 echo "Generating $dataset on whole dataset..."
 if [ ! -f "$2/$dataset-fit.pkl" ]; then
+    canonical=$1/war-of-words-2-ep$leg-with_text_embedding_for_parameter_analysis.txt
+    train_indices=$3/ep$leg-train-indices.txt
+    test_indices=$3/ep$leg-test-indices.txt
     output=$2/$dataset.pkl
-    python $exp.py $canonical $output --threshold $thr
+    cat $train_indices $test_indices > full_indices.tmp
+    python $exp.py \
+        $canonical \
+        $output \
+        --train-indices full_indices.tmp \
+        --text-features \
+        --seed $seed \
+        --threshold $thr
+    rm full_indices.tmp
 else
     echo "Already generated."
 fi
