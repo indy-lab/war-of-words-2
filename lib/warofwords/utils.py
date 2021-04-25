@@ -17,7 +17,8 @@ def parse_definition(definition):
     latent = definition.get('latent-features', False)
     chronological = definition.get('chronological', False)
     baseline = definition.get('baseline', None)
-    return leg, explicit, text, latent, chronological, baseline
+    fit = definition.get('fit', False)
+    return leg, explicit, text, latent, chronological, baseline, fit
 
 
 def build_name(leg, explicit, text, latent, chronological, baseline):

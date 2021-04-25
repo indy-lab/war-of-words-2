@@ -32,13 +32,8 @@ def evaluate(
     if not definition.get('run', True):
         return
 
-    # # Define paths to data, models, and hyperparameters.
-    # base_dir = get_base_dir(__file__)
-    # data_path = f'{base_dir}/0-datasets/pkl'
-    # models_path = f'{base_dir}/trained-models'
-
     # Extract experiment settings.
-    leg, xplct, text, latent, by_dossier, baseline = parse_definition(
+    leg, xplct, text, latent, by_dossier, baseline, _ = parse_definition(
         definition
     )
     # Build the name of experiment from the experiment settings.

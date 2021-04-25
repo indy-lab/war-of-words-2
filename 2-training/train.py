@@ -31,14 +31,8 @@ def run_experiment(definition, data_path, hyper_path, models_path, verbose):
     if not definition.get('run', True):
         return
 
-    # Define paths to data, models, and hyperparameters.
-    # base_dir = get_base_dir(__file__)
-    # data_path = f'{base_dir}/0-datasets/pkl'
-    # models_path = f'{base_dir}/trained-models'
-    # hyper_path = f'{base_dir}/2-training/hyperparams'
-
     # Extract experiment settings.
-    leg, xplct, text, latent, chronological, baseline = parse_definition(
+    leg, xplct, text, latent, chronological, baseline, fit = parse_definition(
         definition
     )
     # Build the name of experiment from the experiment settings.
@@ -46,8 +40,12 @@ def run_experiment(definition, data_path, hyper_path, models_path, verbose):
 
     # Set values based on experiment settings.
     hp = f'{hyper_path}/{name}.json'
-    train_set = f'{data_path}/{name.replace("-latent", "")}-train.pkl'
-    model_path = f'{models_path}/{name}.predict'
+    if fit:
+        train_set = f'{data_path}/{name.replace("-latent", "")}-fit.pkl'
+        model_path = f'{models_path}/{name}.fit'
+    else:
+        train_set = f'{data_path}/{name.replace("-latent", "")}-train.pkl'
+        model_path = f'{models_path}/{name}.predict'
 
     if os.path.exists(model_path):
         print(f'Model "{name}" already trained')

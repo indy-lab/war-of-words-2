@@ -76,5 +76,13 @@
     "explicit-features": "all_features",
     "latent-features": true,
     "text-features": true
+  },
+  {
+    "run": true,
+    "legislature": 8,
+    "explicit-features": "all_features",
+    "latent-features": true,
+    "text-features": true,
+    "fit": true
   }
 ]
