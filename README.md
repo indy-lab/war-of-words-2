@@ -37,12 +37,11 @@ Also download the helpers `helpers.zip` (a mapping of dossier references to thei
 mkdir data/helpers
 ```
 
-You should also put the files containing the indices to split the data into train and test sets `split-indices.zip` in 
+You should also put the files containing the indices to split the data into train and test sets `split-indices.zip` in
 
 ```
 mkdir data/split-indices
 ```
-
 
 ## Step 0: Generate the text embeddings
 
@@ -113,14 +112,13 @@ You finally reproduce the analysis in the paper by running the scripts in the fo
 ```
 python results.py --results ../3-evaluation/results --save-as figures/results.pdf
 python improvement.py --results ../3-evaluation/results --save-as figures/improvement.pdf
-python parameter-analysis.py --model ../2-trained-models/ep8-all_features-latent-text.fit
+python explicit-features.py --model ../2-training/trained-models/ep8-all_features-latent-text.fit --dossier-titles ../data/helpers/dossier-titles.json --meps ../data/helpers/meps.json
 python error-analysis.py --save-as figures/error-analysis.pdf
 ```
 
+The interpretation of the explicit features is in `4-analysis/explicit-features.ipynb`.
 The interpretation of the latent features is in `4-analysis/notebooks/latent-features.ipynb`.
-The interpretation of the text features is in `4-analysis/notebooks/text-features.ipynb`.
-Each of the scripts above also have a corresponding notebook, so that the outputs is easily accessed through notebook readers (such as on GitHub).
-
+The interpretation of the text features is in `4-analysis/text-features.ipynb`.
 
 ## Requirements
 
